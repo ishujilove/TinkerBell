@@ -1,0 +1,334 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Fairy Profile - Elara of Moonwood</title>
+    <link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Playfair+Display&family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: url('https://i.imgur.com/3QZQZ9Q.jpg') no-repeat center center fixed;
+            background-size: cover;
+            color: #4a2c5b;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            min-height: 100vh;
+            overflow: hidden;
+            position: relative;
+        }
+        /* Enhanced Background Transition */
+        body::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: inherit;
+            z-index: -1;
+            opacity: 1;
+            transition: opacity 2s ease-in-out, transform 2s ease;
+            transform: scale(1);
+        }
+        body.changing-bg::before {
+            opacity: 0;
+            transform: scale(1.05);
+        }
+        .container {
+            width: 90%;
+            max-width: 700px;
+            background: rgba(255, 255, 255, 0.85);
+            padding: 30px;
+            border-radius: 25px;
+            margin: 30px 0;
+            box-shadow: 0 0 25px rgba(255, 215, 0, 0.7), 0 0 50px rgba(240, 98, 146, 0.4);
+            position: relative;
+            z-index: 1;
+            backdrop-filter: blur(3px);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        .profile-header {
+            text-align: center;
+            margin-bottom: 25px;
+        }
+        .profile-header h1 {
+            font-family: 'Great Vibes', cursive;
+            font-size: 52px;
+            color: #d81b60;
+            text-shadow: 2px 2px 5px rgba(255, 215, 0, 0.8);
+            animation: glow 2s infinite alternate;
+        }
+        .profile-header p {
+            font-family: 'Playfair Display', serif;
+            font-size: 18px;
+            color: #ce93d8;
+            opacity: 0;
+            animation: fadeIn 1s ease-in forwards;
+            animation-delay: 0.5s;
+        }
+        @keyframes glow {
+            from { text-shadow: 2px 2px 5px rgba(255, 215, 0, 0.8); }
+            to { text-shadow: 2px 2px 10px rgba(255, 215, 0, 1); }
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+        .profile-pic {
+            width: 160px;
+            height: 160px;
+            border-radius: 50%;
+            border: 4px solid #ffd700;
+            display: block;
+            margin: 0 auto 25px;
+            object-fit: cover;
+            box-shadow: 0 0 25px rgba(255, 215, 0, 0.8);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        .profile-pic:hover {
+            transform: scale(1.1);
+            box-shadow: 0 0 40px rgba(240, 98, 146, 0.8);
+        }
+        .upload-section {
+            text-align: center;
+            margin: 25px 0;
+        }
+        .upload-section input[type="file"] {
+            display: none;
+        }
+        .upload-section label {
+            background: linear-gradient(45deg, #f06292, #ce93d8);
+            color: #fff;
+            padding: 12px 25px;
+            border-radius: 25px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            box-shadow: 0 0 15px rgba(255, 215, 0, 0.7);
+            display: inline-block;
+            text-transform: uppercase;
+        }
+        .upload-section label:hover {
+            background: linear-gradient(45deg, #ffd700, #f06292);
+            box-shadow: 0 0 25px rgba(255, 215, 0, 1);
+            transform: translateY(-3px);
+        }
+        .magic-buttons {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 15px;
+        }
+        .magic-button {
+            background: linear-gradient(45deg, #f06292, #ce93d8);
+            color: #fff;
+            padding: 12px 25px;
+            border-radius: 25px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            box-shadow: 0 0 15px rgba(255, 215, 0, 0.7);
+            width: 100%;
+            max-width: 220px;
+            text-transform: uppercase;
+        }
+        .magic-button:hover {
+            background: linear-gradient(45deg, #ffd700, #f06292);
+            box-shadow: 0 0 25px rgba(255, 215, 0, 1);
+            transform: translateY(-3px);
+        }
+        .fairy-dust {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            top: 0;
+            left: 0;
+            pointer-events: none;
+            z-index: 0;
+        }
+        .fairy-dust span {
+            position: absolute;
+            display: block;
+            width: 12px;
+            height: 12px;
+            background: radial-gradient(circle, rgba(255, 215, 0, 0.8), rgba(240, 98, 146, 0.4));
+            border-radius: 50%;
+            animation: float 5s infinite ease-in-out, sparkle 1.5s infinite;
+        }
+        @keyframes float {
+            0% { transform: translateY(0) scale(0.5); opacity: 0; }
+            50% { opacity: 1; }
+            100% { transform: translateY(-1000px) scale(1.2); opacity: 0; }
+        }
+        @keyframes sparkle {
+            0%, 100% { opacity: 0.6; }
+            50% { opacity: 1; }
+        }
+        @media (max-width: 600px) {
+            .profile-header h1 {
+                font-size: 40px;
+            }
+            .profile-pic {
+                width: 130px;
+                height: 130px;
+            }
+            .magic-button {
+                max-width: 180px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="fairy-dust">
+        <span style="left: 10%; animation-delay: 0s;"></span>
+        <span style="left: 25%; animation-delay: 1s;"></span>
+        <span style="left: 40%; animation-delay: 2s;"></span>
+        <span style="left: 55%; animation-delay: 3s;"></span>
+        <span style="left: 70%; animation-delay: 4s;"></span>
+        <span style="left: 85%; animation-delay: 5s;"></span>
+    </div>
+
+    <div class="container">
+        <div class="profile-header">
+            <h1>Elara of Moonwood</h1>
+            <p id="username">@moonwood_fairy</p>
+        </div>
+
+        <img src="https://via.placeholder.com/150x150.png?text=Fairy+Portrait" 
+             alt="Elara the Fairy" 
+             class="profile-pic" 
+             id="profilePic">
+
+        <div class="upload-section">
+            <input type="file" id="imageUpload" accept="image/*">
+            <label for="imageUpload">Change Profile Picture</label>
+        </div>
+
+        <div class="magic-buttons">
+            <button class="magic-button" onclick="changeName()">Change Name</button>
+            <button class="magic-button" onclick="window.location.href='Moon.html'">Fly to the Moon</button>
+            <button class="magic-button" onclick="window.location.href='Home.html'">Home</button>
+        </div>
+    </div>
+
+    <script>
+        const backgrounds = [
+            'https://wallpaperbat.com/img/721151-the-secret-of-the-wings-cartoon-disney-tinker-bell-hd-wallpaper-for-desktop-1920x1080.jpg',
+            'https://wallpaperbat.com/img/721165-tinkerbell-wallpaper-background.jpg',
+            'https://wallpaperbat.com/img/721179-tinkerbell-background.jpg',
+            'https://wallpaperbat.com/img/721206-tinkerbell-wallpaper-hd-1080p-tinker-bell-1920x1080-wallpaper-teahubio.jpg',
+            'https://wallpaperbat.com/img/721124-tinker-bell-wallpaper.jpg',
+            'https://wallpaperbat.com/img/721025-tinkerbell-wallpaper-desktop.jpg',
+            'https://wallpaperbat.com/img/721023-tinkerbell-wallpaper-hd.jpg',
+            'https://wallpaperbat.com/img/721018-wallpaper-tinkerbell.jpg'
+        ];
+        
+        let currentBgIndex = 0;
+
+        function changeBackground() {
+            const body = document.body;
+            body.classList.add('changing-bg');
+            setTimeout(() => {
+                currentBgIndex = (currentBgIndex + 1) % backgrounds.length;
+                body.style.backgroundImage = `url('${backgrounds[currentBgIndex]}')`;
+                body.classList.remove('changing-bg');
+            }, 2000);
+        }
+
+        document.body.style.backgroundImage = `url('${backgrounds[0]}')`;
+        setInterval(changeBackground, 5000);
+
+        function changeName() {
+            const currentUsername = localStorage.getItem('savedUsername') || '@moonwood_fairy';
+            const newName = prompt('✨ Enter your new fairy name:', currentUsername.slice(1)); // Remove @ for input
+            if (newName && newName.trim() !== '') {
+                const formattedName = `@${newName.trim()}`;
+                document.getElementById('username').textContent = formattedName;
+                localStorage.setItem('savedUsername', formattedName);
+                alert('✨ Name changed successfully! ✨');
+            } else if (newName !== null) {
+                alert('✨ Please enter a valid name! ✨');
+            }
+        }
+
+        function flyToMoon() {
+            document.body.style.transition = 'transform 0.8s ease';
+            document.body.style.transform = 'translateY(-30px)';
+            setTimeout(() => document.body.style.transform = 'translateY(0)', 800);
+            alert('🌙 Flying to the Moon! 🌙');
+        }
+
+        function summonDust() {
+            const dust = document.querySelector('.fairy-dust');
+            for (let i = 0; i < 5; i++) {
+                const span = document.createElement('span');
+                span.style.left = `${Math.random() * 100}%`;
+                span.style.animationDelay = `${Math.random() * 2}s`;
+                dust.appendChild(span);
+                setTimeout(() => span.remove(), 5000);
+            }
+            alert('✨ Fairy dust summoned! ✨');
+        }
+
+        document.addEventListener('DOMContentLoaded', () => {
+            const imageUpload = document.getElementById('imageUpload');
+            const profilePic = document.getElementById('profilePic');
+            const apiKey = '065c987426ef42a8686118aa3e218726';
+
+            const savedImageUrl = localStorage.getItem('profilePicUrl');
+            if (savedImageUrl) {
+                profilePic.src = savedImageUrl;
+            }
+
+            const savedUsername = localStorage.getItem('savedUsername');
+            if (savedUsername) {
+                document.getElementById('username').textContent = savedUsername;
+            }
+
+            imageUpload.addEventListener('change', (event) => {
+                const file = event.target.files[0];
+                if (file) {
+                    const formData = new FormData();
+                    formData.append('image', file);
+                    profilePic.src = 'https://via.placeholder.com/150x150.png?text=Loading...';
+
+                    fetch(`https://api.imgbb.com/1/upload?key=${apiKey}`, {
+                        method: 'POST',
+                        body: formData
+                    })
+                    .then(response => {
+                        if (!response.ok) throw new Error('Network response was not ok');
+                        return response.json();
+                    })
+                    .then(data => {
+                        if (data.success) {
+                            const newImageUrl = data.data.url;
+                            profilePic.src = newImageUrl;
+                            localStorage.setItem('profilePicUrl', newImageUrl);
+                            alert('✨ Profile picture enchanted successfully! ✨');
+                        } else {
+                            profilePic.src = 'https://via.placeholder.com/150x150.png?text=Error';
+                            alert('Upload failed: ' + data.error.message);
+                        }
+                    })
+                    .catch(error => {
+                        profilePic.src = 'https://via.placeholder.com/150x150.png?text=Error';
+                        alert('Upload failed: ' + error.message);
+                    });
+                } else {
+                    alert('Please select an image.');
+                }
+            });
+        });
+    </script>
+</body>
+</html>

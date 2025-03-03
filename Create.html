@@ -1,0 +1,318 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Reels Feature</title>
+    <style>
+        /* Your existing styles remain unchanged */
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+            padding: 0;
+            background: linear-gradient(to bottom, #f0f4ff, #e6f0ff);
+            color: #333;
+        }
+        .top-nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px 20px;
+            background: #007bff;
+            color: white;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            z-index: 1000;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+        .logo {
+            font-size: 24px;
+            font-weight: bold;
+            letter-spacing: 1px;
+        }
+        .menu {
+            display: flex;
+            gap: 20px;
+        }
+        .menu a {
+            color: white;
+            text-decoration: none;
+            font-size: 16px;
+            transition: color 0.3s ease;
+        }
+        .menu a:hover {
+            color: #cce7ff;
+        }
+        .video-container {
+            position: relative;
+            width: 90%;
+            max-width: 600px;
+            height: 70vh;
+            margin: 80px auto 20px;
+            overflow: hidden;
+            border-radius: 20px;
+            background: black;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+        }
+        video {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            border-radius: 20px;
+        }
+        #recordButton {
+            position: fixed;
+            bottom: 100px;
+            left: 50%;
+            transform: translateX(-50%);
+            padding: 15px 30px;
+            font-size: 18px;
+            cursor: pointer;
+            border: none;
+            background-color: #ff4757;
+            color: white;
+            border-radius: 50px;
+            transition: background 0.3s ease, transform 0.2s ease;
+            box-shadow: 0 4px 15px rgba(255, 71, 87, 0.4);
+        }
+        #recordButton:hover {
+            background-color: #ff6b81;
+            transform: translateX(-50%) scale(1.05);
+        }
+        #recordButton:active {
+            transform: translateX(-50%) scale(0.95);
+        }
+        .bottom-nav {
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+            padding: 10px;
+            position: fixed;
+            bottom: 0;
+            width: 100%;
+            background: white;
+            border-top: 1px solid #ddd;
+            z-index: 100;
+            box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.1);
+        }
+        .bottom-nav img {
+            height: 24px;
+            transition: transform 0.3s ease;
+        }
+        .bottom-nav a:hover img {
+            transform: scale(1.2);
+        }
+        @media (max-width: 480px) {
+            .video-container {
+                height: 60vh;
+            }
+            #recordButton {
+                bottom: 80px;
+                padding: 12px 25px;
+                font-size: 16px;
+            }
+            .bottom-nav img {
+                height: 20px;
+            }
+        }
+        /* New styles for auth form */
+        .auth-container {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.2);
+            display: none;
+        }
+        .auth-container input {
+            display: block;
+            width: 100%;
+            margin: 10px 0;
+            padding: 8px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Top Navigation -->
+    <div class="top-nav">
+        <div class="logo">Reels App</div>
+        <div class="menu">
+            <a href="#">Home</a>
+            <a href="#">Forum</a>
+            <a href="#">Support</a>
+            <a href="#" id="loginLink">Login</a>
+            <a href="#" id="logoutLink" style="display:none;">Logout</a>
+        </div>
+    </div>
+
+    <!-- Video Container -->
+    <div class="video-container">
+        <video id="cameraView" autoplay></video>
+    </div>
+
+    <!-- Record Button -->
+    <button id="recordButton" style="display:none;">Start Recording</button>
+
+    <!-- Authentication Container -->
+    <div class="auth-container" id="authContainer">
+        <input type="email" id="email" placeholder="Email">
+        <input type="password" id="password" placeholder="Password">
+        <button onclick="signup()">Sign Up</button>
+        <button onclick="login()">Login</button>
+    </div>
+
+    <!-- Bottom Navigation -->
+    <div class="bottom-nav">
+        <a href="home.html"><img src="https://cdn-icons-png.flaticon.com/128/2549/2549900.png" alt="Home"></a>
+        <a href="Search.html"><img src="https://cdn-icons-png.flaticon.com/128/54/54481.png" alt="Search"></a>
+        <a href="Create.html"><img src="https://cdn-icons-png.flaticon.com/128/992/992651.png" alt="Add"></a>
+        <a href="home.html"><img src="https://cdn-icons-png.flaticon.com/128/11820/11820254.png" alt="Reels"></a>
+        <a href="home.html"><img src="https://cdn-icons-png.flaticon.com/128/1144/1144760.png" alt="Profile"></a>
+    </div>
+
+    <!-- Firebase SDK -->
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-auth.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-storage.js"></script>
+
+    <script>
+        // Firebase Configuration (Replace with your Firebase project config)
+        const firebaseConfig = {
+            apiKey: "AIzaSyAaYIf09NAwhSTuGQNGewSfvWyQKGYsegQ",
+            authDomain: ".firebaseapp.com",
+            projectId: "just-25",
+            storageBucket: "your-app.appspot.com",
+            messagingSenderId: "your-sender-id",
+            appId: "1:991204842694:android:728bbe798ed5e54f340bc7"
+        };
+        firebase.initializeApp(firebaseConfig);
+
+        const auth = firebase.auth();
+        const storage = firebase.storage();
+        const recordButton = document.getElementById("recordButton");
+        const cameraView = document.getElementById("cameraView");
+        const authContainer = document.getElementById("authContainer");
+        const loginLink = document.getElementById("loginLink");
+        const logoutLink = document.getElementById("logoutLink");
+        let mediaStream;
+        let mediaRecorder;
+        let recordedChunks = [];
+
+        // Authentication functions
+        function login() {
+            const email = document.getElementById("email").value;
+            const password = document.getElementById("password").value;
+            auth.signInWithEmailAndPassword(email, password)
+                .then(() => {
+                    authContainer.style.display = "none";
+                    alert("Logged in successfully!");
+                })
+                .catch(error => alert("Login failed: " + error.message));
+        }
+
+        function signup() {
+            const email = document.getElementById("email").value;
+            const password = document.getElementById("password").value;
+            auth.createUserWithEmailAndPassword(email, password)
+                .then(() => {
+                    authContainer.style.display = "none";
+                    alert("Signed up successfully!");
+                })
+                .catch(error => alert("Signup failed: " + error.message));
+        }
+
+        function logout() {
+            auth.signOut().then(() => {
+                recordButton.style.display = "none";
+                loginLink.style.display = "block";
+                logoutLink.style.display = "none";
+                alert("Logged out!");
+            });
+        }
+
+        // Handle login link click
+        loginLink.addEventListener("click", () => {
+            authContainer.style.display = "block";
+        });
+
+        logoutLink.addEventListener("click", logout);
+
+        // Check auth state
+        auth.onAuthStateChanged(user => {
+            if (user) {
+                loginLink.style.display = "none";
+                logoutLink.style.display = "block";
+                recordButton.style.display = "block";
+                startCamera();
+            } else {
+                loginLink.style.display = "block";
+                logoutLink.style.display = "none";
+                recordButton.style.display = "none";
+                if (mediaStream) {
+                    mediaStream.getTracks().forEach(track => track.stop());
+                    cameraView.srcObject = null;
+                }
+            }
+        });
+
+        // Start camera
+        async function startCamera() {
+            try {
+                mediaStream = await navigator.mediaDevices.getUserMedia({ video: true });
+                cameraView.srcObject = mediaStream;
+            } catch (error) {
+                alert("Camera access denied: " + error);
+            }
+        }
+
+        // Record and upload
+        recordButton.addEventListener("click", function() {
+            if (!mediaRecorder || mediaRecorder.state === "inactive") {
+                recordedChunks = [];
+                mediaRecorder = new MediaRecorder(mediaStream, { mimeType: "video/webm" });
+                mediaRecorder.ondataavailable = event => {
+                    if (event.data.size > 0) recordedChunks.push(event.data);
+                };
+                mediaRecorder.onstop = function() {
+                    const recordedBlob = new Blob(recordedChunks, { type: "video/webm" });
+                    uploadVideo(recordedBlob);
+                    recordButton.textContent = "Start Recording";
+                    recordButton.style.backgroundColor = "#ff4757";
+                };
+                mediaRecorder.start();
+                recordButton.textContent = "Stop Recording";
+                recordButton.style.backgroundColor = "#ff6b81";
+            } else if (mediaRecorder.state === "recording") {
+                mediaRecorder.stop();
+            }
+        });
+
+        // Upload to Firebase Storage
+        function uploadVideo(blob) {
+            const user = auth.currentUser;
+            if (user) {
+                const ref = storage.ref(`videos/${user.uid}/${Date.now()}.webm`);
+                ref.put(blob)
+                    .then(() => {
+                        alert("Video uploaded successfully!");
+                        return ref.getDownloadURL();
+                    })
+                    .then(url => {
+                        cameraView.srcObject = null;
+                        cameraView.src = url;
+                        cameraView.controls = true;
+                    })
+                    .catch(error => alert("Upload failed: " + error.message));
+            }
+        }
+    </script>
+</body>
+</html>

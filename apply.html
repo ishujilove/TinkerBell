@@ -1,0 +1,357 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Fairy Tale Profile Form</title>
+    <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Playfair+Display&family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: linear-gradient(135deg, #fce4ec, #e1bee7, #b2ebf2);
+            color: #4a2c5b;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            min-height: 100vh;
+            overflow-x: hidden;
+            position: relative;
+        }
+
+        .top-nav {
+            width: 100%;
+            background: linear-gradient(45deg, #f06292, #ce93d8);
+            color: #fff;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px 20px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.15);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            border-bottom: 2px solid #ffd700;
+        }
+
+        .logo img {
+            height: 45px;
+            transition: transform 0.3s ease;
+        }
+        .logo img:hover {
+            transform: scale(1.1) rotate(5deg);
+        }
+
+        .menu a {
+            color: #fff;
+            font-size: 16px;
+            font-weight: 600;
+            padding: 8px 12px;
+            border-radius: 20px;
+            text-decoration: none;
+            background: rgba(255, 255, 255, 0.2);
+            transition: all 0.3s ease;
+            margin: 0 10px;
+        }
+        .menu a:hover {
+            background: #ffd700;
+            color: #f06292;
+            box-shadow: 0 0 10px #ffd700;
+        }
+
+        .container {
+            width: 90%;
+            max-width: 700px;
+            background: rgba(255, 255, 255, 0.9);
+            padding: 30px;
+            border-radius: 20px;
+            border: 2px dashed #ce93d8;
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.1);
+            margin: 20px 0 100px;
+            animation: fadeIn 0.5s ease;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .form-header {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        .form-header h1 {
+            font-family: 'Great Vibes', cursive;
+            font-size: 36px;
+            color: #d81b60;
+            text-shadow: 0 0 5px rgba(255, 215, 0, 0.5);
+        }
+        .form-header p {
+            color: #666;
+            font-size: 14px;
+            font-style: italic;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+        .form-group label {
+            display: block;
+            font-family: 'Playfair Display', serif;
+            font-size: 16px;
+            color: #d81b60;
+            margin-bottom: 5px;
+        }
+        .form-group input,
+        .form-group select,
+        .form-group textarea {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ce93d8;
+            border-radius: 10px;
+            font-size: 14px;
+            background: #fef7fa;
+            color: #4a2c5b;
+            outline: none;
+            transition: border-color 0.3s ease;
+        }
+        .form-group input:focus,
+        .form-group select:focus,
+        .form-group textarea:focus {
+            border-color: #ffd700;
+            box-shadow: 0 0 5px rgba(255, 215, 0, 0.5);
+        }
+        .form-group textarea {
+            resize: vertical;
+            min-height: 100px;
+        }
+
+        .submit-btn {
+            width: 100%;
+            padding: 15px;
+            background: linear-gradient(45deg, #f06292, #ff8a80);
+            color: #fff;
+            font-weight: 600;
+            border: none;
+            border-radius: 10px;
+            cursor: pointer;
+            font-size: 16px;
+            transition: all 0.3s ease;
+            position: relative;
+        }
+        .submit-btn:hover {
+            transform: scale(1.02);
+            box-shadow: 0 5px 15px rgba(255, 215, 0, 0.5);
+        }
+        .submit-btn::after {
+            content: '✨';
+            position: absolute;
+            right: 15px;
+            opacity: 0;
+            transition: opacity 0.3s;
+        }
+        .submit-btn:hover::after {
+            opacity: 1;
+        }
+
+        .bottom-nav {
+            position: fixed;
+            bottom: 20px;
+            width: 90%;
+            max-width: 600px;
+            background: linear-gradient(45deg, rgba(240, 98, 146, 0.9), rgba(206, 147, 216, 0.9));
+            border-radius: 50px;
+            padding: 10px 20px;
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+            box-shadow: 0 5px 25px rgba(255, 215, 0, 0.4);
+            border: 2px solid #ffd700;
+            z-index: 1000;
+            animation: float 3s ease-in-out infinite;
+        }
+        @keyframes float {
+            0% { transform: translateY(0); }
+            50% { transform: translateY(-10px); }
+            100% { transform: translateY(0); }
+        }
+
+        .bottom-nav a {
+            text-decoration: none;
+            position: relative;
+            padding: 10px;
+            transition: all 0.3s ease;
+        }
+
+        .bottom-nav img {
+            width: 32px;
+            height: 32px;
+            filter: brightness(1.2);
+            transition: all 0.3s ease;
+        }
+
+        .bottom-nav a:hover img {
+            transform: scale(1.2) rotate(10deg);
+            filter: brightness(1.5) drop-shadow(0 0 8px #ffd700);
+        }
+
+        .bottom-nav a::after {
+            content: attr(data-tooltip);
+            position: absolute;
+            bottom: 50px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: rgba(255, 215, 0, 0.9);
+            color: #4a2c5b;
+            padding: 5px 10px;
+            border-radius: 10px;
+            font-size: 12px;
+            font-weight: 600;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.3s ease;
+            white-space: nowrap;
+        }
+
+        .bottom-nav a:hover::after {
+            opacity: 1;
+        }
+
+        .butterfly {
+            position: absolute;
+            width: 40px;
+            animation: flutter 6s infinite ease-in-out;
+            z-index: 1;
+        }
+        @keyframes flutter {
+            0% { transform: translateY(0) translateX(0); }
+            25% { transform: translateY(-15px) translateX(10px); }
+            50% { transform: translateY(-25px) translateX(-5px); }
+            75% { transform: translateY(-10px) translateX(8px); }
+            100% { transform: translateY(0) translateX(0); }
+        }
+
+        @media (max-width: 600px) {
+            .top-nav {
+                flex-direction: column;
+                padding: 10px;
+                gap: 15px;
+            }
+            .menu a {
+                margin: 5px;
+            }
+            .container {
+                width: 95%;
+                padding: 20px;
+            }
+            .bottom-nav {
+                width: 95%;
+                padding: 8px 15px;
+            }
+            .bottom-nav img {
+                width: 28px;
+                height: 28px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Top Navigation -->
+    <div class="top-nav">
+        <div class="logo">
+            <img src="https://cdn-icons-png.flaticon.com/128/2997/2997933.png" alt="Fairy Logo">
+        </div>
+        <div class="menu">
+            <a href="#">Home</a>
+            <a href="#">Realm</a>
+            <a href="#">Magic</a>
+        </div>
+    </div>
+
+    <!-- Form Container -->
+    <div class="container">
+        <div class="form-header">
+            <h1>Become a Fairy Princess</h1>
+            <p>Tell us your magical story!</p>
+        </div>
+
+        <form action="https://docs.google.com/forms/u/0/d/e/1FAIpQLSfu7YpBGRQR_v1hbTXbVIljqOUN_7G8sL_mCzcjsalnqgx-vg/formResponse" method="post">
+            <div class="form-group">
+                <label for="name">Your Fairy Name</label>
+                <input type="text" id="name" name="entry.930853367" placeholder="e.g., Princess Elara" required>
+            </div>
+        
+            <div class="form-group">
+                <label for="age">Your Age in Fairy Years</label>
+                <input type="number" id="age" name="entry.1867263131" placeholder="e.g., 12" min="1" required>
+            </div>
+        
+            <div class="form-group">
+                <label for="kingdom">Your Magical Kingdom</label>
+                <input type="text" id="kingdom" name="entry.1290963713" placeholder="e.g., Moonwood Forest" required>
+            </div>
+        
+            <div class="form-group">
+                <label for="power">Your Special Power</label>
+                <select id="power" name="62164440" required>
+                    <option value="">Choose your magic...</option>
+                    <option value="Moonlight Glow">Moonlight Glow</option>
+                    <option value="Stardust Sprinkle">Stardust Sprinkle</option>
+                    <option value="Nature Whisper">Nature Whisper</option>
+                    <option value="Dream Weaving">Dream Weaving</option>
+                </select>
+            </div>
+        
+            <div class="form-group">
+                <label for="bio">Your Fairy Tale</label>
+                <textarea id="bio" name="entry.1532583931" placeholder="Tell us about your magical adventures..." required></textarea>
+            </div>
+        
+            <button type="submit" class="submit-btn">Join the Fairy Realm</button>
+        </form>
+        </form>
+    </div>
+     <!-- Bottom Navigation -->
+     <div class="bottom-nav">
+        <a href="home.html" aria-label="Home"><img src="https://cdn-icons-png.flaticon.com/128/2549/2549900.png" alt="Home"></a>
+        <a href="Search.html" aria-label="Search"><img src="https://cdn-icons-png.flaticon.com/128/54/54481.png" alt="Search"></a>
+        <a href="Create.html" aria-label="Create"><img src="https://cdn-icons-png.flaticon.com/128/992/992651.png" alt="Add"></a>
+        <a href="Reels.html" aria-label="Reels"><img src="https://cdn-icons-png.flaticon.com/128/11820/11820254.png" alt="Reels"></a>
+        <a href="profile.html" aria-label="Profile"><img src="https://cdn-icons-png.flaticon.com/128/1144/1144760.png" alt="Profile"></a>
+    </div>
+
+    <!-- Bottom Navigation -->
+    <div class="bottom-nav">
+        <a href="Home.html" data-tooltip="Home">
+            <img src="https://cdn-icons-png.flaticon.com/128/2549/2549900.png" alt="Home">
+        </a>
+        <a href="Search.html" data-tooltip="Spells">
+            <img src="https://cdn-icons-png.flaticon.com/128/6862/6862118.png" alt="Spells">
+        </a>
+        <a href="Create.html" data-tooltip="Wings">
+            <img src="https://cdn-icons-png.flaticon.com/128/3069/3069209.png" alt="Wings">
+        </a>
+        <a href="Reels.html" data-tooltip="Forest">
+            <img src="https://cdn-icons-png.flaticon.com/128/2998/2998198.png" alt="Forest">
+        </a>
+        <a href="profile.html" data-tooltip="Profile">
+            <img src="https://cdn-icons-png.flaticon.com/128/1144/1144760.png" alt="Profile">
+        </a>
+    </div>
+
+    <!-- Butterflies -->
+    <img src="https://cdn-icons-png.flaticon.com/256/7013/7013737.png" 
+         class="butterfly" 
+         style="top: 20%; left: 5%;" 
+         alt="Butterfly">
+    <img src="https://cdn-icons-png.flaticon.com/256/4720/4720544.png" 
+         class="butterfly" 
+         style="top: 60%; right: 10%;" 
+         alt="Butterfly">
+</body>
+</html>a
