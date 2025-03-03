@@ -1,0 +1,273 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Fairy Flight Adventure</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            overflow: hidden;
+            background: linear-gradient(135deg, #87CEEB 0%, #E0B0FF 50%, #98FB98 100%);
+            font-family: 'Georgia', serif;
+            position: relative;
+        }
+
+        #gameCanvas {
+            display: block;
+            margin: 20px auto;
+            border: 4px solid #FFD700;
+            border-radius: 15px;
+            box-shadow: 0 0 20px rgba(255, 215, 0, 0.5);
+            background: rgba(255, 255, 255, 0.1);
+        }
+
+        #score {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            color: #FFF;
+            font-size: 28px;
+            text-shadow: 0 0 10px #FFD700, 0 0 20px #FF69B4;
+            background: rgba(255, 182, 193, 0.3);
+            padding: 5px 15px;
+            border-radius: 20px;
+            font-family: 'Brush Script MT', cursive;
+        }
+
+        #gameOver {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: rgba(255, 240, 245, 0.95);
+            padding: 30px;
+            border-radius: 20px;
+            text-align: center;
+            display: none;
+            border: 2px solid #FFD700;
+            box-shadow: 0 0 30px rgba(255, 105, 180, 0.5);
+            animation: pulse 2s infinite;
+        }
+
+        #gameOver h2 {
+            color: #FF69B4;
+            font-size: 36px;
+            margin: 0 0 15px 0;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
+        }
+
+        #gameOver p {
+            color: #8B4513;
+            font-size: 24px;
+            margin: 0 0 20px 0;
+        }
+
+        button {
+            padding: 12px 30px;
+            background: linear-gradient(to right, #FFB6C1, #FF69B4);
+            border: none;
+            border-radius: 25px;
+            cursor: pointer;
+            font-size: 18px;
+            color: white;
+            text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.2);
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+
+        button:hover {
+            transform: scale(1.05);
+            box-shadow: 0 0 15px rgba(255, 105, 180, 0.7);
+        }
+
+        @keyframes pulse {
+            0% { transform: translate(-50%, -50%) scale(1); }
+            50% { transform: translate(-50%, -50%) scale(1.02); }
+            100% { transform: translate(-50%, -50%) scale(1); }
+        }
+
+        /* Magical background particles */
+        .particle {
+            position: absolute;
+            border-radius: 50%;
+            background: rgba(255, 215, 0, 0.6);
+            animation: float 6s infinite ease-in-out;
+        }
+
+        @keyframes float {
+            0% { transform: translateY(0); opacity: 0.8; }
+            50% { transform: translateY(-20px); opacity: 0.4; }
+            100% { transform: translateY(0); opacity: 0.8; }
+        }
+    </style>
+</head>
+<body>
+    <div id="score">Score: 0</div>
+    <canvas id="gameCanvas" width="800" height="600"></canvas>
+    <div id="gameOver">
+        <h2>Game Over!</h2>
+        <p>Final Score: <span id="finalScore"></span></p>
+        <button onclick="restartGame()">Play Again</button>
+    </div>
+
+    <script>
+        const canvas = document.getElementById('gameCanvas');
+        const ctx = canvas.getContext('2d');
+        const scoreElement = document.getElementById('score');
+        const gameOverElement = document.getElementById('gameOver');
+        const finalScoreElement = document.getElementById('finalScore');
+
+        // Game variables
+        let score = 0;
+        let gameRunning = true;
+        const gravity = 0.5;
+        let fairy = {
+            x: 100,
+            y: 300,
+            width: 40,
+            height: 40,
+            velocity: 0
+        };
+
+        let obstacles = [];
+        let pixieDust = [];
+        const obstacleSpeed = 3;
+        let frameCount = 0;
+
+        // Create magical particles
+        function createParticles() {
+            for (let i = 0; i < 20; i++) {
+                const particle = document.createElement('div');
+                particle.className = 'particle';
+                particle.style.width = `${Math.random() * 5 + 5}px`;
+                particle.style.height = particle.style.width;
+                particle.style.left = `${Math.random() * 100}%`;
+                particle.style.top = `${Math.random() * 100}%`;
+                particle.style.animationDelay = `${Math.random() * 5}s`;
+                document.body.appendChild(particle);
+            }
+        }
+        createParticles();
+
+        document.addEventListener('keydown', (e) => {
+            if (e.code === 'Space' && gameRunning) {
+                fairy.velocity = -10;
+            }
+        });
+
+        function createObstacle() {
+            const height = Math.random() * 200 + 100;
+            obstacles.push({
+                x: canvas.width,
+                y: Math.random() > 0.5 ? 0 : canvas.height - height,
+                width: 50,
+                height: height
+            });
+        }
+
+        function createPixieDust() {
+            pixieDust.push({
+                x: canvas.width,
+                y: Math.random() * (canvas.height - 50),
+                size: 20
+            });
+        }
+
+        function gameLoop() {
+            if (!gameRunning) return;
+
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+            fairy.velocity += gravity;
+            fairy.y += fairy.velocity;
+            if (fairy.y < 0) fairy.y = 0;
+            if (fairy.y + fairy.height > canvas.height) fairy.y = canvas.height - fairy.height;
+
+            // Enhanced fairy sprite
+            ctx.save();
+            ctx.translate(fairy.x + fairy.width/2, fairy.y + fairy.height/2);
+            ctx.rotate(Math.sin(frameCount * 0.1) * 0.1); // Wing flapping effect
+            ctx.fillStyle = '#FFB6C1';
+            ctx.beginPath();
+            ctx.arc(0, 0, fairy.width/2, 0, Math.PI * 2);
+            ctx.fill();
+            // Glowing wings
+            ctx.fillStyle = 'rgba(255, 255, 255, 0.7)';
+            ctx.beginPath();
+            ctx.ellipse(-10, 0, 15, 25, Math.PI / 4, 0, Math.PI * 2);
+            ctx.fill();
+            ctx.beginPath();
+            ctx.ellipse(-10, 0, 15, 25, -Math.PI / 4, 0, Math.PI * 2);
+            ctx.fill();
+            ctx.restore();
+
+            frameCount++;
+            if (frameCount % 100 === 0) createObstacle();
+            if (frameCount % 60 === 0) createPixieDust();
+
+            obstacles.forEach((obs, index) => {
+                obs.x -= obstacleSpeed;
+                ctx.fillStyle = 'rgba(139, 69, 19, 0.9)';
+                ctx.fillRect(obs.x, obs.y, obs.width, obs.height);
+                ctx.strokeStyle = '#FFD700';
+                ctx.lineWidth = 2;
+                ctx.strokeRect(obs.x, obs.y, obs.width, obs.height);
+
+                if (fairy.x < obs.x + obs.width &&
+                    fairy.x + fairy.width > obs.x &&
+                    fairy.y < obs.y + obs.height &&
+                    fairy.y + fairy.height > obs.y) {
+                    endGame();
+                }
+                if (obs.x + obs.width < 0) obstacles.splice(index, 1);
+            });
+
+            pixieDust.forEach((dust, index) => {
+                dust.x -= obstacleSpeed;
+                ctx.fillStyle = '#FFD700';
+                ctx.beginPath();
+                ctx.arc(dust.x, dust.y, dust.size/2, 0, Math.PI * 2);
+                ctx.fill();
+                // Glow effect
+                ctx.shadowBlur = 20;
+                ctx.shadowColor = '#FFD700';
+                ctx.fill();
+                ctx.shadowBlur = 0;
+
+                if (fairy.x < dust.x + dust.size &&
+                    fairy.x + fairy.width > dust.x &&
+                    fairy.y < dust.y + dust.size &&
+                    fairy.y + fairy.height > dust.y) {
+                    score += 10;
+                    pixieDust.splice(index, 1);
+                    scoreElement.textContent = `Score: ${score}`;
+                }
+                if (dust.x + dust.size < 0) pixieDust.splice(index, 1);
+            });
+
+            requestAnimationFrame(gameLoop);
+        }
+
+        function endGame() {
+            gameRunning = false;
+            gameOverElement.style.display = 'block';
+            finalScoreElement.textContent = score;
+        }
+
+        function restartGame() {
+            gameRunning = true;
+            score = 0;
+            fairy.y = 300;
+            fairy.velocity = 0;
+            obstacles = [];
+            pixieDust = [];
+            scoreElement.textContent = `Score: ${score}`;
+            gameOverElement.style.display = 'none';
+            gameLoop();
+        }
+
+        gameLoop();
+    </script>
+</body>
+</html>

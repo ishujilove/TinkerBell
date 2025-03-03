@@ -1,0 +1,387 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Fairy Tale Search</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Playfair+Display&family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: linear-gradient(135deg, #fce4ec, #e1bee7, #b2ebf2);
+            color: #4a2c5b;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            min-height: 100vh;
+            overflow-x: hidden;
+            position: relative;
+        }
+
+        .top-nav {
+            width: 100%;
+            background: linear-gradient(45deg, #f06292, #ce93d8);
+            color: #fff;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px 20px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.15);
+            position: fixed;
+            top: 0;
+            z-index: 1000;
+            border-bottom: 2px solid #ffd700;
+        }
+
+        .logo {
+            font-family: 'Great Vibes', cursive;
+            font-size: 28px;
+            text-shadow: 0 0 5px rgba(255, 215, 0, 0.5);
+        }
+
+        .menu a {
+            color: #fff;
+            font-size: 16px;
+            font-weight: 600;
+            padding: 8px 12px;
+            border-radius: 20px;
+            text-decoration: none;
+            background: rgba(255, 255, 255, 0.2);
+            transition: all 0.3s ease;
+            margin: 0 10px;
+        }
+        .menu a:hover {
+            background: #ffd700;
+            color: #f06292;
+            box-shadow: 0 0 10px #ffd700;
+        }
+
+        .container {
+            width: 90%;
+            max-width: 600px;
+            background: rgba(255, 255, 255, 0.9);
+            padding: 20px;
+            border-radius: 20px;
+            border: 2px dashed #ce93d8;
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.1);
+            margin: 80px 0 100px;
+            animation: fadeIn 0.5s ease;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .search-header {
+text-align: center;
+            margin-bottom: 20px;
+        }
+        .search-header h1 {
+            font-family: 'Great Vibes', cursive;
+            font-size: 36px;
+            color: #d81b60;
+            text-shadow: 0 0 5px rgba(255, 215, 0, 0.5);
+        }
+
+        .search-bar {
+            display: flex;
+            align-items: center;
+            background: #fef7fa;
+            padding: 10px;
+            border-radius: 25px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            width: 100%;
+            border: 1px solid #ce93d8;
+        }
+
+        .search-bar input {
+            border: none;
+            outline: none;
+            flex: 1;
+            padding: 10px;
+            font-size: 16px;
+            background: transparent;
+            color: #4a2c5b;
+        }
+
+        .search-bar i {
+            font-size: 18px;
+            margin: 0 10px;
+            cursor: pointer;
+            color: #f06292;
+            transition: color 0.3s;
+        }
+
+        .search-bar i:hover {
+            color: #ffd700;
+        }
+
+        .filters {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+            margin-top: 15px;
+        }
+
+        .filter-chip {
+            padding: 8px 15px;
+            border-radius: 20px;
+            background: linear-gradient(45deg, #f8bbd0, #ce93d8);
+            color: #fff;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .filter-chip.active {
+            background: linear-gradient(45deg, #ff8a80, #f06292);
+            box-shadow: 0 0 10px rgba(255, 215, 0, 0.5);
+        }
+
+        .tabs {
+            display: flex;
+            gap: 15px;
+            margin: 20px 0;
+            flex-wrap: wrap;
+        }
+
+        .tab {
+            padding: 8px 12px;
+            cursor: pointer;
+            border-radius: 20px;
+            background: #fef7fa;
+            color: #d81b60;
+            font-family: 'Playfair Display', serif;
+            transition: all 0.3s ease;
+        }
+
+        .tab.active {
+            background: #f06292;
+            color: #fff;
+        }
+
+        .tab:hover {
+            background: #e1bee7;
+            transform: translateY(-2px);
+        }
+
+        .results {
+            margin-top: 15px;
+        }
+
+        .result-card {
+            padding: 15px;
+            background: #fef7fa;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+            margin-bottom: 10px;
+            transition: all 0.3s ease;
+        }
+
+        .result-card:hover {
+            transform: translateY(-2px);
+            background: #f3e5f5;
+            box-shadow: 0 5px 15px rgba(255, 215, 0, 0.3);
+        }
+
+        .bottom-nav {
+            position: fixed;
+            bottom: 20px;
+            width: 90%;
+            max-width: 600px;
+            background: linear-gradient(45deg, rgba(240, 98, 146, 0.9), rgba(206, 147, 216, 0.9));
+            border-radius: 50px;
+            padding: 10px 20px;
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+            box-shadow: 0 5px 25px rgba(255, 215, 0, 0.4);
+            border: 2px solid #ffd700;
+            z-index: 1000;
+            animation: float 3s ease-in-out infinite;
+        }
+        @keyframes float {
+            0% { transform: translateY(0); }
+            50% { transform: translateY(-10px); }
+            100% { transform: translateY(0); }
+        }
+
+        .bottom-nav a {
+            text-decoration: none;
+            position: relative;
+            padding: 10px;
+            transition: all 0.3s ease;
+        }
+
+        .bottom-nav img {
+            width: 32px;
+            height: 32px;
+            filter: brightness(1.2);
+            transition: all 0.3s ease;
+        }
+
+        .bottom-nav a:hover img {
+            transform: scale(1.2) rotate(10deg);
+            filter: brightness(1.5) drop-shadow(0 0 8px #ffd700);
+        }
+
+        .bottom-nav a::after {
+            content: attr(data-tooltip);
+            position: absolute;
+            bottom: 50px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: rgba(255, 215, 0, 0.9);
+            color: #4a2c5b;
+            padding: 5px 10px;
+            border-radius: 10px;
+            font-size: 12px;
+            font-weight: 600;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.3s ease;
+            white-space: nowrap;
+        }
+
+        .bottom-nav a:hover::after {
+            opacity: 1;
+        }
+
+        .butterfly {
+            position: absolute;
+            width: 40px;
+            animation: flutter 6s infinite ease-in-out;
+            z-index: 1;
+        }
+        @keyframes flutter {
+            0% { transform: translateY(0) translateX(0); }
+            25% { transform: translateY(-15px) translateX(10px); }
+            50% { transform: translateY(-25px) translateX(-5px); }
+            75% { transform: translateY(-10px) translateX(8px); }
+            100% { transform: translateY(0) translateX(0); }
+        }
+
+        @media (max-width: 600px) {
+            .top-nav {
+                flex-direction: column;
+                padding: 10px;
+                gap: 15px;
+            }
+            .menu a {
+                margin: 5px;
+            }
+            .container {
+                width: 95%;
+                padding: 15px;
+            }
+            .bottom-nav {
+                width: 95%;
+                padding: 8px 15px;
+            }
+            .bottom-nav img {
+                width: 28px;
+                height: 28px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Top Navigation -->
+    <div class="top-nav">
+        <div class="logo">Fairy Realm</div>
+        <div class="menu">
+            <a href="index.html">Home</a>
+            <a href="profile.html">Magic</a>
+            <a href="profile.html">Support</a>
+            <a href="Search.html">Wings</a>
+        </div>
+    </div>
+
+    <!-- Search Container -->
+    <div class="container">
+        <div class="search-header">
+            <h1>Search the Fairy Realm</h1>
+        </div>
+
+        <div class="search-bar">
+            <i class="fas fa-search"></i>
+            <input type="text" placeholder="Seek magical tales, fairies...">
+            <i class="fas fa-microphone"></i>
+        </div>
+        
+        <div class="filters">
+            <a href="tink.html" class="filter-chip active">Fairy Spells</a>
+            <a href="tinker.html" class="filter-chip">Dream Dust</a>
+            <a href="" class="filter-chip">Enchanted Help</a>
+            <a href="forest.html" class="filter-chip">Wing Songs</a>
+        </div>
+        
+        <div class="tabs">
+            <div class="tab active">Tales</div>
+            <div class="tab">Fairies</div>
+            <div class="tab">Glimmers</div>
+            <div class="tab">Treasures</div>
+        </div>
+        
+        <div class="results">
+            <div class="result-card">Moonlight Tale - 23 sparkles</div>
+            <div class="result-card">Stardust Whisper - 45 sparkles</div>
+            <div class="result-card">Forest Song - 67 sparkles</div>
+        </div>
+    </div>
+
+    <!-- Bottom Navigation -->
+    <div class="bottom-nav">
+        <a href="home.html" data-tooltip="Home">
+            <img src="https://cdn-icons-png.flaticon.com/128/2549/2549900.png" alt="Home">
+        </a>
+        <a href="search.html" data-tooltip="Search">
+            <img src="https://cdn-icons-png.flaticon.com/128/54/54481.png" alt="Search">
+        </a>
+        <a href="create.html" data-tooltip="Create">
+            <img src="https://cdn-icons-png.flaticon.com/128/992/992651.png" alt="Add">
+        </a>
+        <a href="reels.html" data-tooltip="Reels">
+            <img src="https://cdn-icons-png.flaticon.com/128/11820/11820254.png" alt="Reels">
+        </a>
+        <a href="profile.html" data-tooltip="Profile">
+            <img src="https://cdn-icons-png.flaticon.com/128/1144/1144760.png" alt="Profile">
+        </a>
+    </div>
+
+    <!-- Butterflies -->
+    <img src="https://cdn-icons-png.flaticon.com/256/7013/7013737.png" 
+         class="butterfly" 
+         style="top: 20%; left: 5%;" 
+         alt="Butterfly">
+    <img src="https://cdn-icons-png.flaticon.com/256/4720/4720544.png" 
+         class="butterfly" 
+         style="top: 60%; right: 10%;" 
+         alt="Butterfly">
+
+
+
+
+
+         <script>function filterResults() {
+            const filter = document.getElementById('searchInput').value.toLowerCase();
+            const results = document.getElementById('results');
+            const cards = results.getElementsByClassName('result-card');
+
+            for (let i = 0; i < cards.length; i++) {
+                const card = cards[i];
+                if (card.textContent.toLowerCase().includes(filter)) {
+                    card.style.display = '';
+                } else {
+                    card.style.display = 'none';
+                }
+            }
+        }</script>
+</body>
+</html>

@@ -1,0 +1,537 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Fairy Looking Forward</title>
+    <style>
+        body {
+            background: radial-gradient(circle, #99ccff, #1e3a8a);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .fairy {
+            position: relative;
+            width: 140px;
+            height: 240px;
+            animation: float 3s infinite ease-in-out;
+            filter: drop-shadow(0 0 15px rgba(255, 182, 193, 0.6));
+        }
+
+
+        .wings {
+    position: absolute;
+    width: 120px;
+    height: 180px;
+    background: linear-gradient(
+        45deg, 
+        rgba(144, 238, 144, 0.4),  /* Light green for a forest-fairy vibe */
+        rgba(173, 216, 230, 0.5), /* Soft blue for shimmer */
+        rgba(255, 245, 230, 0.3)  /* Subtle golden-white for sparkle */
+    );
+    border-radius: 20% 80% 60% 40%; /* Sharper top (smaller top-left), flowing bottom */
+    box-shadow: 
+        0 0 20px rgba(173, 216, 230, 0.8), /* Softer outer glow */
+        inset 0 0 15px rgba(255, 255, 255, 0.6); /* Inner sparkle for realism */
+    border: 1px solid rgba(255, 255, 255, 0.2); /* Thin, ethereal edge */
+    animation: wingFlap 0.3s infinite alternate ease-in-out; /* Faster flap for fairy-like energy */
+    opacity: 0.85; /* Slightly more translucent for delicacy */
+    filter: blur(1px); /* Subtle blur for a magical, soft effect */
+}
+
+/* Optional: Add a slight texture or vein-like pattern with a pseudo-element */
+.wings::before {
+    content: '';
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    background: radial-gradient(circle, rgba(255, 255, 255, 0.1) 10%, transparent 50%);
+    opacity: 0.3;
+    border-radius: inherit;
+}
+
+@keyframes wingFlap {
+    0% {
+        transform: scale(1) rotate(0deg);
+    }
+    100% {
+        transform: scale(1.05) rotate(5deg); /* Subtle stretch and tilt for realism */
+    }
+}
+
+.wings::before {
+    content: "";
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    background: repeating-linear-gradient(
+        60deg, 
+        rgba(255, 255, 255, 0.3) 0px, 
+        rgba(255, 255, 255, 0.3) 10px, 
+        transparent 10px, 
+        transparent 20px
+    ); /* Striped effect */
+    border-radius: inherit;
+    z-index: 2; /* Keeps it above the base wing */
+    opacity: 0.5; /* Soft, fairy-like stripes */
+    pointer-events: none; /* Ensures no interference with interaction */
+}
+
+
+.left-wing {
+    left: -70px;
+    top: 10px;
+    border-radius: 80% 20% 40% 60%; /* Left wing: sharp top-right, mirrored shape */
+    transform: rotate(20deg); /* Positive rotation to face opposite the right wing */
+}
+
+/* Optional: Add a slight texture or vein-like pattern with a pseudo-element */
+.wings::before {
+    content: '';
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    background: radial-gradient(circle, rgba(255, 255, 255, 0.1) 10%, transparent 50%);
+    opacity: 0.3;
+    border-radius: inherit;
+}
+
+@keyframes wingFlap {
+    0% {
+        transform: scale(1) rotate(0deg);
+    }
+    100% {
+        transform: scale(1.05) rotate(5deg); /* Subtle stretch and tilt for realism */
+    }
+}
+
+        .right-wing {
+            right: -70px;
+            top: 10px;
+            transform: rotate(20deg);
+        }
+
+        .body {
+            position: absolute;
+            width: 60px;
+            height: 100px;
+            background: linear-gradient(135deg, #85ff66, #1d9b4d);
+            border-radius: 20px 20px 50% 50%;
+            top: 60px;
+            left: 40px;
+        }
+
+        .bra-top {
+    position: absolute;
+    width: 60px;
+    height: 35px;
+    background: radial-gradient(circle at center, #ff3399 30%, #ff66b2 80%, #cc0066 100%);
+    border-radius: 50% 50% 20% 20%;
+    top: 45px;
+    left: 45px;
+    box-shadow: 
+        2px 4px 6px rgba(0, 0, 0, 0.2), /* Soft shadow for depth */
+        inset 0 4px 8px rgba(255, 255, 255, 0.3); /* Inner highlight for realism */
+    border: 1.5px solid rgba(255, 255, 255, 0.5); /* Thin glow effect */
+}
+
+/* Adding a strap */
+.bra-strap {
+    position: absolute;
+    width: 5px;
+    height: 30px;
+    background: linear-gradient(to bottom, #ff66b2, #cc0066);
+    border-radius: 5px;
+    top: 20px;
+    left: 55px;
+}
+
+        .head {
+            position: absolute;
+            width: 50px;
+            height: 50px;
+            background: #f4c2c2;
+            border-radius: 50%;
+            top: 10px;
+            left: 45px;
+        }
+
+       .eyes {
+    position: absolute;
+    width: 14px;
+    height: 14px;
+    background: radial-gradient(circle, #fff 20%, #ffdab9 40%, #ff69b4 70%);
+    border-radius: 50%;
+    top: 18px;
+    box-shadow: 0 0 10px rgba(255, 223, 186, 0.9),
+                0 0 18px rgba(255, 192, 203, 0.7),
+                0 0 25px rgba(255, 160, 122, 0.5);
+    animation: fairyTwinkle 1.8s infinite ease-in-out, fairyBlink 3s infinite;
+}
+
+/* Floating and glowing effect */
+@keyframes fairyTwinkle {
+    0% {
+        transform: scale(1) translateY(0);
+        opacity: 0.9;
+        box-shadow: 0 0 10px rgba(255, 223, 186, 0.9),
+                    0 0 18px rgba(255, 192, 203, 0.7);
+    }
+    50% {
+        transform: scale(1.15) translateY(-3px);
+        opacity: 1;
+        box-shadow: 0 0 14px rgba(255, 223, 186, 1),
+                    0 0 22px rgba(255, 160, 122, 0.8);
+    }
+    100% {
+        transform: scale(1) translateY(0);
+        opacity: 0.9;
+        box-shadow: 0 0 10px rgba(255, 223, 186, 0.9),
+                    0 0 18px rgba(255, 192, 203, 0.7);
+    }
+}
+
+/* Blinking animation */
+@keyframes fairyBlink {
+    0%, 100% {
+        transform: scaleY(1);
+    }
+    10%, 90% {
+        transform: scaleY(0.1);
+    }
+}
+
+/* Extra magical glow on hover */
+.fairy-container:hover .eyes {
+    animation: fairyTwinkle 1s infinite ease-in-out, fairyBlink 2.5s infinite;
+    box-shadow: 0 0 15px rgba(255, 223, 186, 1),
+                0 0 25px rgba(255, 105, 180, 0.8);
+}
+.eyes {
+    position: absolute;
+    width: 16px;
+    height: 16px;
+    background: radial-gradient(circle, #ffffff 30%, #cccccc 60%, #000000 85%);
+    border-radius: 50%;
+    top: 18px;
+    box-shadow: 0 0 8px rgba(255, 255, 255, 0.6),
+                0 0 12px rgba(100, 100, 100, 0.4),
+                0 0 18px rgba(0, 0, 0, 0.5);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    animation: fairyTwinkle 1s infinite ease-in-out, fairyBlink 2s infinite;
+}
+
+/* Add a realistic pupil */
+.eyes::before {
+    content: "";
+    position: absolute;
+    width: 6px;
+    height: 6px;
+    background: radial-gradient(circle, #000 30%, #222 80%);
+    border-radius: 50%;
+}
+
+/* Add a small cornea shine */
+.eyes::after {
+    content: "";
+    position: absolute;
+    width: 4px;
+    height: 4px;
+    background: rgba(255, 255, 255, 0.9);
+    border-radius: 50%;
+    top: 2px;
+    left: 3px;
+    box-shadow: 0 0 3px rgba(255, 255, 255, 0.8);
+}
+
+/* Floating and glowing effect */
+@keyframes fairyTwinkle {
+    0% {
+        transform: scale(1) translateY(0);
+        opacity: 1;
+        box-shadow: 0 0 8px rgba(255, 255, 255, 0.6),
+                    0 0 12px rgba(100, 100, 100, 0.4);
+    }
+    50% {
+        transform: scale(1.05) translateY(-2px);
+        opacity: 1;
+        box-shadow: 0 0 10px rgba(255, 255, 255, 0.7),
+                    0 0 14px rgba(100, 100, 100, 0.5);
+    }
+    100% {
+        transform: scale(1) translateY(0);
+        opacity: 1;
+        box-shadow: 0 0 8px rgba(255, 255, 255, 0.6),
+                    0 0 12px rgba(100, 100, 100, 0.4);
+    }
+}
+
+/* Realistic blinking effect */
+@keyframes fairyBlink {
+    0%, 100% {
+        transform: scaleY(1);
+    }
+    10%, 90% {
+        transform: scaleY(0.05);
+    }
+}
+
+/* Extra glow effect on hover */
+.fairy-container:hover .eyes {
+    animation: fairyTwinkle 1.5s infinite ease-in-out, fairyBlink 3s infinite;
+    box-shadow: 0 0 12px rgba(255, 255, 255, 0.7),
+                0 0 18px rgba(100, 100, 100, 0.5);
+}
+
+        .eye-left { left: 14px; }
+        .eye-right { left: 28px; }
+
+        .mouth {
+            position: absolute;
+            width: 16px;
+            height: 8px;
+            background: none;
+            border-bottom: 2px solid #d89090;
+            border-radius: 50%;
+            top: 36px;
+            left: 17px;
+        }
+
+        .nose {
+            position: absolute;
+            width: 6px;
+            height: 6px;
+            background: #d89090;
+            border-radius: 50%;
+            top: 28px;
+            left: 22px;
+        }
+
+       /* Hair behind the head */
+       .hair {
+    position: absolute;
+    width: 85px;
+    height: 95px;
+    background: linear-gradient(to bottom, #8b4513 20%, #5c2e0d 60%, #3d1c07 100%);
+    border-radius: 60% 40% 40% 60% / 70% 50% 50% 30%;
+    top: -8px; /* Adjust for natural placement */
+    left: 30px; /* Align with head */
+    z-index: -2; /* Behind face */
+    animation: hairFlow 3s infinite ease-in-out;
+}
+
+/* Adding hair strands for extra realism */
+.hair::before, .hair::after {
+    content: "";
+    position: absolute;
+    width: 30px;
+    height: 50px;
+    background: linear-gradient(to bottom, #a0522d 10%, #5c2e0d 80%);
+    border-radius: 50%;
+    top: 10px;
+    z-index: -3;
+}
+
+/* Left flowing strand */
+.hair::before {
+    left: -15px;
+    transform: rotate(-10deg);
+    animation: strandFlow 2.5s infinite ease-in-out;
+}
+
+/* Right flowing strand */
+.hair::after {
+    right: -15px;
+    transform: rotate(10deg);
+    animation: strandFlow 2.8s infinite ease-in-out alternate;
+}
+
+/* Main hair waving animation */
+@keyframes hairFlow {
+    0%, 100% {
+        transform: rotate(0deg) translateY(0);
+    }
+    50% {
+        transform: rotate(3deg) translateY(-2px);
+    }
+}
+
+/* Strands swaying motion */
+@keyframes strandFlow {
+    0%, 100% {
+        transform: rotate(0deg);
+    }
+    50% {
+        transform: rotate(8deg);
+    }
+}
+
+/* Adding an extra bounce effect when hovered */
+.fairy-container:hover .hair {
+    animation: hairBounce 1s ease-in-out;
+}
+
+@keyframes hairBounce {
+    0% { transform: translateY(0); }
+    50% { transform: translateY(-5px); }
+    100% { transform: translateY(0); }
+}
+
+
+        .legs {
+            position: absolute;
+            width: 10px;
+            height: 40px;
+            background: linear-gradient(to bottom, #cc0066, #ff66b2);
+            border-radius: 10px;
+            top: 160px;
+        }
+
+        .leg-left { left: 48px; }
+        .leg-right { left: 75px; }
+
+        .boots {
+            position: absolute;
+            width: 14px;
+            height: 25px;
+            background: linear-gradient(to bottom, #1a1a1a, #4d4d4d);
+            border-radius: 5px;
+            top: 195px;
+        }
+
+        .boot-left { left: 46px; }
+        .boot-right { left: 74px; }
+
+        .arm {
+    position: absolute;
+    width: 8px;
+    height: 60px;
+    background: linear-gradient(to bottom, #f4c2c2, #d89090);
+    border-radius: 5px;
+    top: 70px;
+    transform-origin: top center; /* For smoother waving */
+    animation: fairyWave 2s infinite ease-in-out;
+}
+
+.arm-left {
+    left: 35px;
+    transform: rotate(10deg);
+}
+
+.arm-right {
+    left: 95px;
+    transform: rotate(-10deg);
+}
+
+.hand {
+    position: absolute;
+    width: 12px;
+    height: 15px;
+    /* More realistic hand shape with gradient */
+    background: radial-gradient(circle at 50% 30%, #ffe4e1 20%, #f4c2c2 50%, #d89090 80%);
+    border-radius: 6px 6px 4px 4px; /* Slightly less circular for realism */
+    bottom: -15px;
+    left: -2px;
+    box-shadow: 1px 1px 2px rgba(216, 144, 144, 0.3); /* Subtle shadow for depth */
+    animation: fairyFlutter 0.8s infinite ease-in-out;
+}
+
+/* Arm waving animation */
+@keyframes fairyWave {
+    0% {
+        transform: rotate(10deg);
+    }
+    50% {
+        transform: rotate(15deg);
+    }
+    100% {
+        transform: rotate(10deg);
+    }
+}
+
+/* Hand fluttering animation */
+@keyframes fairyFlutter {
+    0% {
+        transform: rotate(0deg) translateY(0);
+        box-shadow: 1px 1px 2px rgba(216, 144, 144, 0.3);
+    }
+    50% {
+        transform: rotate(5deg) translateY(-2px);
+        box-shadow: 1px 1px 4px rgba(216, 144, 144, 0.5);
+    }
+    100% {
+        transform: rotate(0deg) translateY(0);
+        box-shadow: 1px 1px 2px rgba(216, 144, 144, 0.3);
+    }
+}
+
+/* Adjust arm-left and arm-right animations */
+.arm-left {
+    animation: fairyWave 2s infinite ease-in-out;
+}
+
+.arm-right {
+    left: 95px;
+    transform: rotate(-10deg);
+    animation: fairyWaveOpposite 2s infinite ease-in-out; /* Opposite wave */
+}
+
+        .wand {
+            position: absolute;
+            width: 5px;
+            height: 50px;
+            background: linear-gradient(to bottom, #ffd700, #ff8c00);
+            top: 80px;
+            left: 100px;
+            transform: rotate(45deg);
+            border-radius: 5px;
+        }
+
+        .wand-tip {
+            position: absolute;
+            width: 10px;
+            height: 10px;
+            background: white;
+            border-radius: 50%;
+            top: -5px;
+            left: -2.5px;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0) rotate(2deg); }
+            50% { transform: translateY(-10px) rotate(-2deg); }
+        }
+
+       
+    </style>
+</head>
+<body>
+    <div class="fairy">
+        <div class="wings left-wing"></div>
+        <div class="wings right-wing"></div>
+        <div class="body"></div>
+        <div class="bra-top"></div>
+        <div class="head">
+            <div class="eyes eye-left"></div>
+            <div class="eyes eye-right"></div>
+            <div class="nose"></div>
+            <div class="mouth"></div>
+        </div>
+        <div class="hair"></div>
+        <div class="arm arm-left"><div class="hand"></div></div>
+        <div class="arm arm-right"><div class="hand"></div></div>
+        <div class="wand"><div class="wand-tip"></div></div>
+        <div class="legs leg-left"></div>
+        <div class="legs leg-right"></div>
+        <div class="boots boot-left"></div>
+        <div class="boots boot-right"></div>
+    </div>
+</body>
+</html>
