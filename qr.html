@@ -1,0 +1,272 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Enchanted Fairy Tale Form</title>
+    <style>
+        body {
+            font-family: 'Papyrus', 'Brush Script MT', Arial, sans-serif;
+            margin: 0;
+            height: 100vh;
+            background: linear-gradient(135deg, #FFB6C1, #FF69B4, #8A2BE2); /* Richer gradient */
+            overflow: hidden;
+            position: relative;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .container {
+            text-align: center;
+            background: rgba(255, 240, 245, 0.97); /* More opaque for readability */
+            padding: 40px;
+            border-radius: 40px;
+            box-shadow: 0 0 40px rgba(255, 20, 147, 0.8), inset 0 0 20px rgba(255, 215, 0, 0.5); /* Stronger glow */
+            max-width: 500px;
+            border: 5px double #FF1493; /* Bolder border */
+            position: relative;
+            z-index: 2;
+            animation: float 2.5s ease-in-out infinite; /* Faster float */
+        }
+
+        h1 {
+            color: #FF00FF;
+            text-shadow: 0 0 10px #FFD700, 3px 3px 8px #FF69B4; /* Vibrant glow */
+            font-size: 3.5em;
+            margin: 0 0 25px;
+            animation: pulseGlow 1.8s infinite; /* Faster pulse */
+        }
+
+        img.qr-code {
+            max-width: 300px;
+            margin: 30px 0;
+            border: 10px solid #FFD700; /* Thicker border */
+            border-radius: 30px;
+            transition: transform 0.4s ease, box-shadow 0.4s ease;
+            box-shadow: 0 0 25px rgba(255, 20, 147, 0.9); /* Brighter glow */
+        }
+
+        img.qr-code:hover {
+            transform: scale(1.25) rotate(15deg); /* More dynamic hover */
+            box-shadow: 0 0 40px rgba(255, 215, 0, 1); /* Intense gold glow */
+        }
+
+        p {
+            color: #8A2BE2; /* Richer purple */
+            font-size: 1.5em;
+            margin: 15px 0;
+            text-shadow: 1px 1px 5px #FFF0F5;
+            font-style: italic;
+            animation: fadeIn 2s ease-in-out infinite; /* Subtle fade */
+        }
+
+        a {
+            color: #FF4500;
+            text-decoration: underline wavy #FFD700; /* Wavy gold */
+            font-weight: bold;
+            font-size: 1.4em;
+            transition: color 0.3s, transform 0.3s, text-shadow 0.3s;
+        }
+
+        a:hover {
+            color: #FFD700;
+            transform: scale(1.15); /* Bigger bounce */
+            text-shadow: 0 0 10px #FF1493; /* Glowing hover */
+        }
+
+        /* Fairy crown decoration */
+        .fairy-crown {
+            position: absolute;
+            top: -70px;
+            left: 50%;
+            transform: translateX(-50%);
+            z-index: 3;
+        }
+
+        .crown {
+            width: 120px;
+            height: 60px;
+            background: linear-gradient(45deg, #FFD700, #FF4500); /* Fiery gradient */
+            border-radius: 70% 70% 0 0;
+            position: relative;
+            box-shadow: 0 0 20px #FF1493;
+        }
+
+        .crown::before {
+            content: '';
+            position: absolute;
+            top: -20px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 30px;
+            height: 30px;
+            background: #FF00FF;
+            border-radius: 50%;
+            box-shadow: 0 0 15px #FFD700;
+            animation: jewelGlow 1.5s infinite; /* Glowing jewel */
+        }
+
+        /* Fairy dust effect */
+        .fairy-dust {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 1;
+        }
+
+        .sparkle {
+            position: absolute;
+            width: 20px;
+            height: 20px;
+            background: radial-gradient(#FF00FF, transparent); /* Brighter sparkle */
+            border-radius: 50%;
+            animation: sparkle 2.5s infinite;
+            opacity: 0;
+            box-shadow: 0 0 15px #FFD700, 0 0 25px #FF1493;
+        }
+
+        /* Butterflies */
+        .butterfly {
+            position: absolute;
+            width: 40px;
+            height: 25px;
+            background: linear-gradient(45deg, #FF69B4, #00CED1); /* Vibrant wings */
+            border-radius: 50%;
+            animation: flutter 4s infinite ease-in-out;
+            z-index: 0;
+            box-shadow: 0 0 10px #FFD700;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-20px); }
+        }
+
+        @keyframes pulseGlow {
+            0% { text-shadow: 0 0 10px #FFD700, 3px 3px 8px #FF69B4; }
+            50% { text-shadow: 0 0 20px #FF00FF, 4px 4px 12px #FFD700; }
+            100% { text-shadow: 0 0 10px #FFD700, 3px 3px 8px #FF69B4; }
+        }
+
+        @keyframes sparkle {
+            0% { opacity: 0; transform: scale(0) rotate(0deg); }
+            50% { opacity: 1; transform: scale(1.8) rotate(180deg); }
+            100% { opacity: 0; transform: scale(0) rotate(360deg); }
+        }
+
+        @keyframes flutter {
+            0% { transform: translate(0, 0) rotate(0deg); }
+            25% { transform: translate(30px, -30px) rotate(20deg); }
+            50% { transform: translate(-30px, -50px) rotate(-20deg); }
+            75% { transform: translate(30px, -30px) rotate(15deg); }
+            100% { transform: translate(0, 0) rotate(0deg); }
+        }
+
+        @keyframes jewelGlow {
+            0% { box-shadow: 0 0 15px #FFD700; }
+            50% { box-shadow: 0 0 25px #FF00FF; }
+            100% { box-shadow: 0 0 15px #FFD700; }
+        }
+
+        @keyframes fadeIn {
+            0%, 100% { opacity: 0.7; }
+            50% { opacity: 1; }
+        }
+
+        /* Responsive design */
+        @media (max-width: 480px) {
+            .container {
+                padding: 25px;
+                max-width: 340px; /* Adjusted for smaller screens */
+                border-radius: 25px;
+            }
+            h1 {
+                font-size: 2.2em; /* Readable on mobile */
+            }
+            img.qr-code {
+                max-width: 220px; /* Smaller QR code */
+                border: 8px solid #FFD700;
+            }
+            p {
+                font-size: 1.2em;
+            }
+            a {
+                font-size: 1.2em;
+            }
+            .crown {
+                width: 90px;
+                height: 45px;
+            }
+            .crown::before {
+                width: 20px;
+                height: 20px;
+                top: -15px;
+            }
+            .butterfly {
+                width: 25px;
+                height: 15px;
+            }
+            .sparkle {
+                width: 15px;
+                height: 15px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="fairy-crown">
+            <div class="crown"></div>
+        </div>
+        <h1>Enchanted Form Quest</h1>
+        <img src="https://api.qrserver.com/v1/create-qr-code/?size=300x300&data=https://docs.google.com/forms/d/e/YOUR_FORM_ID/viewform" alt="QR Code" class="qr-code">
+        <p>Flutter your wings to scan!</p>
+        <p>Or soar to the form at:</p>
+        <a href="https://docs.google.com/forms/d/e/YOUR_FORM_ID/viewform">Enchanted Link</a>
+    </div>
+
+    <div class="fairy-dust" id="fairyDust"></div>
+
+    <script>
+        // Add fairy dust effect
+        function createSparkle() {
+            const sparkle = document.createElement('div');
+            sparkle.className = 'sparkle';
+            const dust = document.getElementById('fairyDust');
+            dust.appendChild(sparkle);
+
+            sparkle.style.left = Math.random() * 100 + 'vw';
+            sparkle.style.top = Math.random() * 100 + 'vh';
+            sparkle.style.animationDelay = Math.random() * 1.5 + 's';
+
+            setTimeout(() => sparkle.remove(), 2500);
+        }
+
+        // Add butterflies
+        function createButterfly() {
+            const butterfly = document.createElement('div');
+            butterfly.className = 'butterfly';
+            document.body.appendChild(butterfly);
+
+            butterfly.style.left = Math.random() * 85 + 'vw'; /* Adjusted for mobile */
+            butterfly.style.top = Math.random() * 85 + 'vh';
+            butterfly.style.animationDelay = Math.random() * 3 + 's';
+
+            setTimeout(() => butterfly.remove(), 4000);
+        }
+
+        // Interactive hover sound (optional, requires audio file)
+        const qrCode = document.querySelector('.qr-code');
+        qrCode.addEventListener('mouseenter', () => {
+            // Uncomment and add an audio file for a magical sound effect
+            // new Audio('magic-sound.mp3').play();
+        });
+
+        // Create sparkles and butterflies at intervals
+        setInterval(createSparkle, 80); /* Faster sparkles */
+        setInterval(createButterfly, 1500); /* More frequent butterflies */
+    </script>
+</body>
+</html>
